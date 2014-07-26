@@ -38,6 +38,7 @@ root@ruo91:~# docker run -d --name="arcus-memcached-3" -h "memcached-3" arcus-me
 
 ### Step 4. Container IP 확인 및 SSH 접속
 - Arcus Admin, Memcached 1,2,3
+arcus-admin의 비밀번호은 arcus이고, arcus-memcached의 비밀번호는 memcached 입니다.
 ```
 root@ruo91:~# docker inspect -f '{{ .NetworkSettings.IPAddress }}' \
 arcus-admin arcus-memcached-1 arcus-memcached-2 arcus-memcached-3
