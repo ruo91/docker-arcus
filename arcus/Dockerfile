@@ -19,18 +19,21 @@ RUN apt-get update && apt-get install -y supervisor openssh-server aptitude net-
 ENV SRC_DIR /opt
 
 # JDK 설치
+ENV JDK_URL http://download.oracle.com/otn-pub/java/jdk
+ENV JDK_VER 8u65-b17
+ENV JDK_VER2 jdk-8u65
 ENV JAVA_HOME /usr/local/jdk
 ENV PATH $PATH:$JAVA_HOME/bin
-RUN curl -LO "http://download.oracle.com/otn-pub/java/jdk/8u11-b12/jdk-8u11-linux-x64.tar.gz" -H 'Cookie: oraclelicense=accept-securebackup-cookie' \
- && tar xzf jdk-8u11-linux-x64.tar.gz && mv jdk1.8.0_11 /usr/local/jdk && rm -f jdk-8u11-linux-x64.tar.gz \
+RUN cd $SRC_DIR && curl -LO "$JDK_URL/$JDK_VER/$JDK_VER2-linux-x64.tar.gz" -H 'Cookie: oraclelicense=accept-securebackup-cookie' \
+ && tar xzf $JDK_VER2-linux-x64.tar.gz && mv jdk1* $JAVA_HOME && rm -f $JDK_VER2-linux-x64.tar.gz \
  && echo '' >> /etc/profile \
  && echo '# JDK' >> /etc/profile \
  && echo "export JAVA_HOME=$JAVA_HOME" >> /etc/profile \
- && echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/profile \
+ && echo 'export PATH="$PATH:$JAVA_HOME/bin"' >> /etc/profile \
  && echo '' >> /etc/profile
 
 # ANT 설치
-ENV ANT_VER 1.9.4
+ENV ANT_VER 1.9.6
 ENV ANT_HOME $SRC_DIR/apache-ant-$ANT_VER
 ENV PATH $PATH:$ANT_HOME/bin
 RUN cd $SRC_DIR && curl -LO "http://www.us.apache.org/dist/ant/binaries/apache-ant-$ANT_VER-bin.tar.bz2" \
